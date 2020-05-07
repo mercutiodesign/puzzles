@@ -9,6 +9,9 @@ loopy     : [G] WINDOWS COMMON loopy LOOPY_EXTRA loopy.res|noicon.res
 loopysolver :   [U] loopy[STANDALONE_SOLVER] LOOPY_EXTRA STANDALONE m.lib
 loopysolver :   [C] loopy[STANDALONE_SOLVER] LOOPY_EXTRA STANDALONE
 
+loopygenerator :   [U] loopy[STANDALONE_GENERATOR] LOOPY_EXTRA STANDALONE m.lib
+loopygenerator :   [C] loopy[STANDALONE_GENERATOR] LOOPY_EXTRA STANDALONE
+
 #penrose :    [U] penrose[TEST_PENROSE] STANDALONE m.lib
 #penrose :    [C] penrose[TEST_PENROSE] STANDALONE
 
