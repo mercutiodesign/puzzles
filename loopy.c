@@ -11,7 +11,7 @@
 
 /*
  * Possible future solver enhancements:
- * 
+ *
  *  - There's an interesting deductive technique which makes use
  *    of topology rather than just graph theory. Each _face_ in
  *    the grid is either inside or outside the loop; you can tell
@@ -51,7 +51,7 @@
  * 	    loop over all pairs of edges in the grid, so it should
  * 	    be reserved until there's nothing easier left to be
  * 	    done.
- * 
+ *
  *  - The generalised grid support has made me (SGT) notice a
  *    possible extension to the loop-avoidance code. When you have
  *    a path of connected edges such that no other edges at all
@@ -687,10 +687,10 @@ static const char *validate_params(const game_params *params, bool full)
     if (params->type < 0 || params->type >= NUM_GRID_TYPES)
         return "Illegal grid type";
     if (params->w < grid_size_limits[params->type].amin ||
-	params->h < grid_size_limits[params->type].amin)
+        params->h < grid_size_limits[params->type].amin)
         return grid_size_limits[params->type].aerr;
     if (params->w < grid_size_limits[params->type].omin &&
-	params->h < grid_size_limits[params->type].omin)
+        params->h < grid_size_limits[params->type].omin)
         return grid_size_limits[params->type].oerr;
 
     /*
@@ -839,12 +839,12 @@ static char *encode_solve_move(const game_state *state)
 
     for (i = 0; i < num_edges; i++) {
         switch (state->lines[i]) {
-	  case LINE_YES:
-	    p += sprintf(p, "%dy", i);
-	    break;
-	  case LINE_NO:
-	    p += sprintf(p, "%dn", i);
-	    break;
+          case LINE_YES:
+            p += sprintf(p, "%dy", i);
+            break;
+          case LINE_NO:
+            p += sprintf(p, "%dn", i);
+            break;
         }
     }
 
@@ -1041,30 +1041,30 @@ static char *game_text_format(const game_state *state)
         x = x1 + x2;
         y = y1 + y2;
         switch (state->lines[i]) {
-	  case LINE_YES:
-	    ret[y*W + x] = (y1 == y2) ? '-' : '|';
-	    break;
-	  case LINE_NO:
-	    ret[y*W + x] = 'x';
-	    break;
-	  case LINE_UNKNOWN:
-	    break; /* already a space */
-	  default:
-	    assert(!"Illegal line state");
+          case LINE_YES:
+            ret[y*W + x] = (y1 == y2) ? '-' : '|';
+            break;
+          case LINE_NO:
+            ret[y*W + x] = 'x';
+            break;
+          case LINE_UNKNOWN:
+            break; /* already a space */
+          default:
+            assert(!"Illegal line state");
         }
     }
 
     /* Fill in clues */
     for (i = 0; i < g->num_faces; i++) {
-	int x1, x2, y1, y2;
+        int x1, x2, y1, y2;
 
         f = g->faces + i;
         assert(f->order == 4);
         /* Cell coordinates, from (0,0) to (w-1,h-1) */
-	x1 = (f->dots[0]->x - g->lowest_x) / cell_size;
-	x2 = (f->dots[2]->x - g->lowest_x) / cell_size;
-	y1 = (f->dots[0]->y - g->lowest_y) / cell_size;
-	y2 = (f->dots[2]->y - g->lowest_y) / cell_size;
+        x1 = (f->dots[0]->x - g->lowest_x) / cell_size;
+        x2 = (f->dots[2]->x - g->lowest_x) / cell_size;
+        y1 = (f->dots[0]->y - g->lowest_y) / cell_size;
+        y2 = (f->dots[2]->y - g->lowest_y) / cell_size;
         /* Midpoint, in canvas coordinates */
         x = x1 + x2;
         y = y1 + y2;
@@ -1521,7 +1521,7 @@ static game_state *new_game(midend *me, const game_params *params,
         n2 = *dp - 'A' + 10;
         if (n >= 0 && n < 10) {
             state->clues[i] = n;
-	} else if (n2 >= 10 && n2 < 36) {
+        } else if (n2 >= 10 && n2 < 36) {
             state->clues[i] = n2;
         } else {
             n = *dp - 'a' + 1;
@@ -2010,17 +2010,17 @@ static int parity_deductions(solver_state *sstate,
         can[2] = edsf_canonify(linedsf, e[2], inv+2);
         if (can[0] == can[1]) {
             if (solver_set_line(sstate, e[2], (total_parity^inv[0]^inv[1]) ?
-				LINE_YES : LINE_NO))
+                                LINE_YES : LINE_NO))
                 diff = min(diff, DIFF_EASY);
         }
         if (can[0] == can[2]) {
             if (solver_set_line(sstate, e[1], (total_parity^inv[0]^inv[2]) ?
-				LINE_YES : LINE_NO))
+                                LINE_YES : LINE_NO))
                 diff = min(diff, DIFF_EASY);
         }
         if (can[1] == can[2]) {
             if (solver_set_line(sstate, e[0], (total_parity^inv[1]^inv[2]) ?
-				LINE_YES : LINE_NO))
+                                LINE_YES : LINE_NO))
                 diff = min(diff, DIFF_EASY);
         }
     } else if (unknown_count == 4) {
@@ -2405,11 +2405,11 @@ static int dline_deductions(solver_state *sstate)
                      * Dlines where one of the edges is known, are handled in the
                      * dot-deductions */
                     continue;
-    
+
                 dline_index = dline_index_from_face(g, f, k);
                 k++;
                 if (k >= N) k = 0;
-    
+
                 /* minimum YESs in the complement of this dline */
                 if (mins[k][j] > clue - 2) {
                     /* Adding 2 YESs would break the clue */
@@ -2658,7 +2658,7 @@ static int linedsf_deductions(solver_state *sstate)
             }
             /* Infer linedsf from dline flags */
             if (is_atmostone(dlines, dline_index)
-		&& is_atleastone(dlines, dline_index)) {
+                && is_atleastone(dlines, dline_index)) {
                 if (merge_lines(sstate, line1_index, line2_index, true))
                     diff = min(diff, DIFF_HARD);
             }
@@ -2816,7 +2816,7 @@ static int loop_deductions(solver_state *sstate)
                     sm1_nearby++;
             }
             if (sm1clues == sm1_nearby &&
-		sm1clues + satclues == clues) {
+                sm1clues + satclues == clues) {
                 val = LINE_YES;  /* loop is good! */
             }
         }
@@ -2861,7 +2861,7 @@ static solver_state *solve_game_rec(const solver_state *sstate_start)
 
     /* Index of the solver we should call next. */
     int i = 0;
-    
+
     /* As a speed-optimisation, we avoid re-running solvers that we know
      * won't make any progress.  This happens when a high-difficulty
      * solver makes a deduction that can only help other high-difficulty
@@ -2877,7 +2877,7 @@ static solver_state *solve_game_rec(const solver_state *sstate_start)
      */
     int threshold_diff = 0;
     int threshold_index = 0;
-    
+
     sstate = dup_solver_state(sstate_start);
 
     check_caches(sstate);
@@ -2983,40 +2983,40 @@ static char *interpret_move(const game_state *state, game_ui *ui,
 
     switch (button) {
       case LEFT_BUTTON:
-	switch (old_state) {
-	  case LINE_UNKNOWN:
-	    button_char = 'y';
-	    break;
-	  case LINE_YES:
+        switch (old_state) {
+          case LINE_UNKNOWN:
+            button_char = 'y';
+            break;
+          case LINE_YES:
 #ifdef STYLUS_BASED
-	    button_char = 'n';
-	    break;
+            button_char = 'n';
+            break;
 #endif
-	  case LINE_NO:
-	    button_char = 'u';
-	    break;
-	}
-	break;
+          case LINE_NO:
+            button_char = 'u';
+            break;
+        }
+        break;
       case MIDDLE_BUTTON:
-	button_char = 'u';
-	break;
+        button_char = 'u';
+        break;
       case RIGHT_BUTTON:
-	switch (old_state) {
-	  case LINE_UNKNOWN:
-	    button_char = 'n';
-	    break;
-	  case LINE_NO:
+        switch (old_state) {
+          case LINE_UNKNOWN:
+            button_char = 'n';
+            break;
+          case LINE_NO:
 #ifdef STYLUS_BASED
-	    button_char = 'y';
-	    break;
+            button_char = 'y';
+            break;
 #endif
-	  case LINE_YES:
-	    button_char = 'u';
-	    break;
-	}
-	break;
+          case LINE_YES:
+            button_char = 'u';
+            break;
+        }
+        break;
       default:
-	return NULL;
+        return NULL;
     }
 
     movelen = 0;
@@ -3114,17 +3114,17 @@ static game_state *execute_move(const game_state *state, const char *move)
             goto fail;
         move += strspn(move, "1234567890");
         switch (*(move++)) {
-	  case 'y':
-	    newstate->lines[i] = LINE_YES;
-	    break;
-	  case 'n':
-	    newstate->lines[i] = LINE_NO;
-	    break;
-	  case 'u':
-	    newstate->lines[i] = LINE_UNKNOWN;
-	    break;
-	  default:
-	    goto fail;
+          case 'y':
+            newstate->lines[i] = LINE_YES;
+            break;
+          case 'n':
+            newstate->lines[i] = LINE_NO;
+            break;
+          case 'u':
+            newstate->lines[i] = LINE_UNKNOWN;
+            break;
+          default:
+            goto fail;
         }
     }
 
@@ -3202,7 +3202,7 @@ static void face_text_bbox(game_drawstate *ds, grid *g, grid_face *f,
 }
 
 static void game_redraw_clue(drawing *dr, game_drawstate *ds,
-			     const game_state *state, int i)
+                             const game_state *state, int i)
 {
     grid *g = state->game_grid;
     grid_face *f = g->faces + i;
@@ -3213,10 +3213,10 @@ static void game_redraw_clue(drawing *dr, game_drawstate *ds,
 
     face_text_pos(ds, g, f, &x, &y);
     draw_text(dr, x, y,
-	      FONT_VARIABLE, ds->tilesize/2,
-	      ALIGN_VCENTRE | ALIGN_HCENTRE,
-	      ds->clue_error[i] ? COL_MISTAKE :
-	      ds->clue_satisfied[i] ? COL_SATISFIED : COL_FOREGROUND, c);
+              FONT_VARIABLE, ds->tilesize/2,
+              ALIGN_VCENTRE | ALIGN_HCENTRE,
+              ds->clue_error[i] ? COL_MISTAKE :
+              ds->clue_satisfied[i] ? COL_SATISFIED : COL_FOREGROUND, c);
 }
 
 static void edge_bbox(game_drawstate *ds, grid *g, grid_edge *e,
@@ -3261,7 +3261,7 @@ static const int loopy_line_redraw_phases[] = {
 #define NPHASES lenof(loopy_line_redraw_phases)
 
 static void game_redraw_line(drawing *dr, game_drawstate *ds,
-			     const game_state *state, int i, int phase)
+                             const game_state *state, int i, int phase)
 {
     grid *g = state->game_grid;
     grid_edge *e = g->edges + i;
@@ -3269,15 +3269,15 @@ static void game_redraw_line(drawing *dr, game_drawstate *ds,
     int line_colour;
 
     if (state->line_errors[i])
-	line_colour = COL_MISTAKE;
+        line_colour = COL_MISTAKE;
     else if (state->lines[i] == LINE_UNKNOWN)
-	line_colour = COL_LINEUNKNOWN;
+        line_colour = COL_LINEUNKNOWN;
     else if (state->lines[i] == LINE_NO)
-	line_colour = COL_FAINT;
+        line_colour = COL_FAINT;
     else if (ds->flashing)
-	line_colour = COL_HIGHLIGHT;
+        line_colour = COL_HIGHLIGHT;
     else
-	line_colour = COL_FOREGROUND;
+        line_colour = COL_FOREGROUND;
     if (line_colour != loopy_line_redraw_phases[phase])
         return;
 
@@ -3286,24 +3286,24 @@ static void game_redraw_line(drawing *dr, game_drawstate *ds,
     grid_to_screen(ds, g, e->dot2->x, e->dot2->y, &x2, &y2);
 
     if (line_colour == COL_FAINT) {
-	static int draw_faint_lines = -1;
-	if (draw_faint_lines < 0) {
-	    char *env = getenv("LOOPY_FAINT_LINES");
-	    draw_faint_lines = (!env || (env[0] == 'y' ||
-					 env[0] == 'Y'));
-	}
-	if (draw_faint_lines)
-	    draw_line(dr, x1, y1, x2, y2, line_colour);
+        static int draw_faint_lines = -1;
+        if (draw_faint_lines < 0) {
+            char *env = getenv("LOOPY_FAINT_LINES");
+            draw_faint_lines = (!env || (env[0] == 'y' ||
+                                         env[0] == 'Y'));
+        }
+        if (draw_faint_lines)
+            draw_line(dr, x1, y1, x2, y2, line_colour);
     } else {
-	draw_thick_line(dr, 3.0,
-			x1 + 0.5, y1 + 0.5,
-			x2 + 0.5, y2 + 0.5,
-			line_colour);
+        draw_thick_line(dr, 3.0,
+                        x1 + 0.5, y1 + 0.5,
+                        x2 + 0.5, y2 + 0.5,
+                        line_colour);
     }
 }
 
 static void game_redraw_dot(drawing *dr, game_drawstate *ds,
-			    const game_state *state, int i)
+                            const game_state *state, int i)
 {
     grid *g = state->game_grid;
     grid_dot *d = g->dots + i;
@@ -3401,7 +3401,7 @@ static void game_redraw(drawing *dr, game_drawstate *ds,
      */
 
     if (!ds->started) {
-	redraw_everything = true;
+        redraw_everything = true;
         /*
          * But we must still go through the upcoming loops, so that we
          * set up stuff in ds correctly for the initial redraw.
@@ -3507,23 +3507,23 @@ static void game_redraw(drawing *dr, game_drawstate *ds,
                             0, 0, w + 2*border + 1, h + 2*border + 1);
     } else {
 
-	/* Right.  Now we roll up our sleeves. */
+        /* Right.  Now we roll up our sleeves. */
 
-	for (i = 0; i < nfaces; i++) {
-	    grid_face *f = g->faces + faces[i];
-	    int x, y, w, h;
+        for (i = 0; i < nfaces; i++) {
+            grid_face *f = g->faces + faces[i];
+            int x, y, w, h;
 
             face_text_bbox(ds, g, f, &x, &y, &w, &h);
             game_redraw_in_rect(dr, ds, state, x, y, w, h);
-	}
+        }
 
-	for (i = 0; i < nedges; i++) {
-	    grid_edge *e = g->edges + edges[i];
+        for (i = 0; i < nedges; i++) {
+            grid_edge *e = g->edges + edges[i];
             int x, y, w, h;
 
             edge_bbox(ds, g, e, &x, &y, &w, &h);
             game_redraw_in_rect(dr, ds, state, x, y, w, h);
-	}
+        }
     }
 
     ds->started = true;
@@ -3618,18 +3618,18 @@ static void game_print(drawing *dr, const game_state *state, int tilesize)
             double d = sqrt(SQ((double)x1 - x2) + SQ((double)y1 - y2));
             double dx = (x2 - x1) / d;
             double dy = (y2 - y1) / d;
-	    int points[8];
+            int points[8];
 
             dx = (dx * ds->tilesize) / thickness;
             dy = (dy * ds->tilesize) / thickness;
-	    points[0] = x1 + (int)dy;
-	    points[1] = y1 - (int)dx;
-	    points[2] = x1 - (int)dy;
-	    points[3] = y1 + (int)dx;
-	    points[4] = x2 - (int)dy;
-	    points[5] = y2 + (int)dx;
-	    points[6] = x2 + (int)dy;
-	    points[7] = y2 - (int)dx;
+            points[0] = x1 + (int)dy;
+            points[1] = y1 - (int)dx;
+            points[2] = x1 - (int)dy;
+            points[3] = y1 + (int)dx;
+            points[4] = x2 - (int)dy;
+            points[5] = y2 + (int)dx;
+            points[6] = x2 + (int)dy;
+            points[7] = y2 - (int)dx;
             draw_polygon(dr, points, 4, ink, ink);
         }
         else
@@ -3725,7 +3725,7 @@ int main(int argc, char **argv)
             really_verbose = true;
         } else
 #endif
-	if (!strcmp(p, "-g")) {
+        if (!strcmp(p, "-g")) {
             grade = true;
         } else if (*p == '-') {
             fprintf(stderr, "%s: unrecognised option `%s'\n", argv[0], p);
@@ -3763,58 +3763,141 @@ int main(int argc, char **argv)
      */
     ret = -1;			       /* placate optimiser */
     for (diff = 0; diff < DIFF_MAX; diff++) {
-	solver_state *sstate_new;
-	solver_state *sstate = new_solver_state((game_state *)s, diff);
+        solver_state *sstate_new;
+        solver_state *sstate = new_solver_state((game_state *)s, diff);
 
-	sstate_new = solve_game_rec(sstate);
+        sstate_new = solve_game_rec(sstate);
 
-	if (sstate_new->solver_status == SOLVER_MISTAKE)
-	    ret = 0;
-	else if (sstate_new->solver_status == SOLVER_SOLVED)
-	    ret = 1;
-	else
-	    ret = 2;
+        if (sstate_new->solver_status == SOLVER_MISTAKE)
+            ret = 0;
+        else if (sstate_new->solver_status == SOLVER_SOLVED)
+            ret = 1;
+        else
+            ret = 2;
 
-	free_solver_state(sstate_new);
-	free_solver_state(sstate);
+        free_solver_state(sstate_new);
+        free_solver_state(sstate);
 
-	if (ret < 2)
-	    break;
+        if (ret < 2)
+            break;
     }
 
     if (diff == DIFF_MAX) {
-	if (grade)
-	    printf("Difficulty rating: harder than Hard, or ambiguous\n");
-	else
-	    printf("Unable to find a unique solution\n");
+        if (grade)
+            printf("Difficulty rating: harder than Hard, or ambiguous\n");
+        else
+            printf("Unable to find a unique solution\n");
     } else {
-	if (grade) {
-	    if (ret == 0)
-		printf("Difficulty rating: impossible (no solution exists)\n");
-	    else if (ret == 1)
-		printf("Difficulty rating: %s\n", diffnames[diff]);
-	} else {
-	    solver_state *sstate_new;
-	    solver_state *sstate = new_solver_state((game_state *)s, diff);
+        if (grade) {
+            if (ret == 0)
+                printf("Difficulty rating: impossible (no solution exists)\n");
+            else if (ret == 1)
+                printf("Difficulty rating: %s\n", diffnames[diff]);
+        } else {
+            solver_state *sstate_new;
+            solver_state *sstate = new_solver_state((game_state *)s, diff);
 
-	    /* If we supported a verbose solver, we'd set verbosity here */
+            /* If we supported a verbose solver, we'd set verbosity here */
 
-	    sstate_new = solve_game_rec(sstate);
+            sstate_new = solve_game_rec(sstate);
 
-	    if (sstate_new->solver_status == SOLVER_MISTAKE)
-		printf("Puzzle is inconsistent\n");
-	    else {
-		assert(sstate_new->solver_status == SOLVER_SOLVED);
-		if (s->grid_type == 0) {
-		    fputs(game_text_format(sstate_new->state), stdout);
-		} else {
-		    printf("Unable to output non-square grids\n");
-		}
-	    }
+            if (sstate_new->solver_status == SOLVER_MISTAKE)
+                printf("Puzzle is inconsistent\n");
+            else {
+                assert(sstate_new->solver_status == SOLVER_SOLVED);
+                if (s->grid_type == 0) {
+                    fputs(game_text_format(sstate_new->state), stdout);
+                } else {
+                    printf("Unable to output non-square grids\n");
+                }
+            }
 
-	    free_solver_state(sstate_new);
-	    free_solver_state(sstate);
-	}
+            free_solver_state(sstate_new);
+            free_solver_state(sstate);
+        }
+    }
+
+    return 0;
+}
+
+#endif
+
+#ifdef STANDALONE_GENERATOR
+
+/*
+ * Simple standalone generator.
+ */
+
+const char *quis;
+
+#include <stdarg.h>
+#include <time.h>
+
+static void usage_exit(const char *msg)
+{
+    if (msg)
+        fprintf(stderr, "%s: %s\n", quis, msg);
+    fprintf(stderr, "Usage: %s [--seed SEED] [--count COUNT] <params>\n", quis);
+    exit(1);
+}
+
+int main(int argc, char **argv)
+{
+    game_params *p;
+    random_state *rs;
+    char *params = NULL, *desc = NULL;
+    int count = 1;
+    void *seed = NULL;
+    time_t seedtime;
+    int seedlen = 0;
+
+    quis = argv[0];
+    while (--argc > 0) {
+        char *p = *++argv;
+        if (!strcmp(p, "--seed")) {
+            if (argc == 0) usage_exit("--seed needs an argument");
+            seed = (void *)*++argv;
+            seedlen = strlen(seed);
+            argc--;
+        } else if (!strcmp(p, "--count")) {
+            if (argc == 0) usage_exit("--count needs an argument");
+            count = (time_t)atoi(*++argv);
+            argc--;
+        } else if (*p == '-') {
+            fprintf(stderr, "%s: unrecognised option `%s'\n", argv[0], p);
+            return 1;
+        } else {
+            params = p;
+        }
+    }
+
+    if (!params) {
+        usage_exit(NULL);
+    }
+
+    if (!seed) {
+        seedtime = time(NULL);
+        seed = (void *)&seedtime;
+        seedlen = sizeof(time_t);
+    }
+
+    p = default_params();
+    decode_params(p, params);
+
+    /*
+    int w, h;
+    int diff;
+    int type;
+    */
+    fprintf(stderr, "decoded params: w=%d,h=%d,diff=%d,type=%d => %s\n", p->w, p->h, p->diff, p->type, encode_params(p, true));
+
+    rs = random_new(seed, seedlen);
+    /*
+    const game_params *params, random_state *rs, char **aux, bool interactive
+    */
+    while (--count >= 0) {
+        desc = new_game_desc(p, rs, NULL, false);
+        printf("%s:%s\n", params, desc);
     }
 
     return 0;
