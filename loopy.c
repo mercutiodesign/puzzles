@@ -3855,25 +3855,24 @@ int main(int argc, char **argv)
     while (--argc > 0) {
         char *p = *++argv;
         if (!strcmp(p, "--seed")) {
-            if (argc == 0) usage_exit("--seed needs an argument");
+            if (argc < 2) usage_exit("--seed needs an argument");
             seed = (void *)*++argv;
             seedlen = strlen(seed);
             argc--;
         } else if (!strcmp(p, "--count")) {
-            if (argc == 0) usage_exit("--count needs an argument");
+            if (argc < 2) usage_exit("--count needs an argument");
             count = (time_t)atoi(*++argv);
             argc--;
         } else if (*p == '-') {
             fprintf(stderr, "%s: unrecognised option `%s'\n", argv[0], p);
             return 1;
         } else {
+            if (params) usage_exit("too many arguments");
             params = p;
         }
     }
 
-    if (!params) {
-        usage_exit(NULL);
-    }
+    if (!params) usage_exit(NULL);
 
     if (!seed) {
         seedtime = time(NULL);
@@ -3884,17 +3883,13 @@ int main(int argc, char **argv)
     p = default_params();
     decode_params(p, params);
 
-    /*
-    int w, h;
-    int diff;
-    int type;
-    */
+    if (p->w <= 0) usage_exit("invalid width");
+    if (p->h <= 0) usage_exit("invalid height");
+
+    /* debug params: */
     fprintf(stderr, "decoded params: w=%d,h=%d,diff=%d,type=%d => %s\n", p->w, p->h, p->diff, p->type, encode_params(p, true));
 
     rs = random_new(seed, seedlen);
-    /*
-    const game_params *params, random_state *rs, char **aux, bool interactive
-    */
     while (--count >= 0) {
         desc = new_game_desc(p, rs, NULL, false);
         printf("%s:%s\n", params, desc);
